@@ -6,7 +6,6 @@
         public string Title { get; set; }
         public DateTime ReleaseDate { get; set; }
 
-        // Foreign key for MarvelCharacter
-        public int CharacterId { get; set; }
+        public List<int> CharacterIds { get; set; } = new List<int>();
     }
 }
