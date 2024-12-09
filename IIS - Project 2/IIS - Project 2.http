@@ -1,0 +1,6 @@
+@IIS___Project_2_HostAddress = http://localhost:5069
+
+GET {{IIS___Project_2_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
