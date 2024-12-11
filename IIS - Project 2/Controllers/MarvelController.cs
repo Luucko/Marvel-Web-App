@@ -47,9 +47,11 @@ namespace IIS___Project_2.Controllers
                 Id = 2,
                 Title = "Avengers",
                 ReleaseDate = new DateTime(2012, 5, 4),
-                CharacterIds = new List<int> { 1, 2 } // Linking movie to both Iron Man and Captain America
+                CharacterIds = new List<int> { 1, 2, 3 } // Linking movie to Iron Man, Captain America, and Thor
             }
         };
+
+        // CHARACTER CRUD OPERATIONS
 
         // GET: api/marvel/characters
         [HttpGet("characters")]
@@ -80,6 +82,42 @@ namespace IIS___Project_2.Controllers
             return CreatedAtAction(nameof(GetCharacterById), new { id = character.Id }, character);
         }
 
+        // PUT: api/marvel/characters/{id}
+        [HttpPut("characters/{id}")]
+        public IActionResult UpdateCharacter(int id, MarvelCharacter updatedCharacter)
+        {
+            var character = Characters.FirstOrDefault(c => c.Id == id);
+            if (character == null)
+            {
+                return NotFound();
+            }
+
+            character.Name = updatedCharacter.Name;
+            character.Superpower = updatedCharacter.Superpower;
+            character.Team = updatedCharacter.Team;
+
+            return NoContent();
+        }
+
+        // DELETE: api/marvel/characters/{id}
+        [HttpDelete("characters/{id}")]
+        public IActionResult DeleteCharacter(int id)
+        {
+            var character = Characters.FirstOrDefault(c => c.Id == id);
+            if (character == null)
+            {
+                return NotFound();
+            }
+
+            // Remove character from any movies they are linked to
+            Movies.ForEach(m => m.CharacterIds.Remove(id));
+            Characters.Remove(character);
+
+            return NoContent();
+        }
+
+        // MOVIE CRUD OPERATIONS
+
         // GET: api/marvel/movies
         [HttpGet("movies")]
         public ActionResult<IEnumerable<Movie>> GetAllMovies()
@@ -104,7 +142,7 @@ namespace IIS___Project_2.Controllers
         [HttpPost("movies")]
         public ActionResult<Movie> AddMovie(Movie movie)
         {
-            // Ensure that the movie is linked to valid character IDs
+            // Ensure all linked characters exist
             foreach (var characterId in movie.CharacterIds)
             {
                 if (!Characters.Any(c => c.Id == characterId))
@@ -128,11 +166,7 @@ namespace IIS___Project_2.Controllers
                 return NotFound();
             }
 
-            // Update movie properties, including character links
-            movie.Title = updatedMovie.Title;
-            movie.ReleaseDate = updatedMovie.ReleaseDate;
-
-            // Ensure all character IDs exist before updating
+            // Ensure all linked characters exist
             foreach (var characterId in updatedMovie.CharacterIds)
             {
                 if (!Characters.Any(c => c.Id == characterId))
@@ -141,23 +175,9 @@ namespace IIS___Project_2.Controllers
                 }
             }
 
-            movie.CharacterIds = updatedMovie.CharacterIds; // Update character links
-            return NoContent(); // Success, no content to return
-        }
-
-        // DELETE: api/marvel/characters/{id}
-        [HttpDelete("characters/{id}")]
-        public IActionResult DeleteCharacter(int id)
-        {
-            var character = Characters.FirstOrDefault(c => c.Id == id);
-            if (character == null)
-            {
-                return NotFound();
-            }
-
-            // Also remove any movies linked to this character
-            Movies.RemoveAll(m => m.CharacterIds.Contains(id));
-            Characters.Remove(character);
+            movie.Title = updatedMovie.Title;
+            movie.ReleaseDate = updatedMovie.ReleaseDate;
+            movie.CharacterIds = updatedMovie.CharacterIds;
 
             return NoContent();
         }
