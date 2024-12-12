@@ -57,7 +57,6 @@ namespace IIS___Project_2.Controllers
         /// <summary>
         /// Retrieve all Marvel characters.
         /// </summary>
-        /// <returns>A list of Marvel characters.</returns>
         [HttpGet("characters")]
         public ActionResult<IEnumerable<MarvelCharacter>> GetAllCharacters()
         {
@@ -67,8 +66,6 @@ namespace IIS___Project_2.Controllers
         /// <summary>
         /// Retrieve a specific Marvel character by their ID.
         /// </summary>
-        /// <param name="id">The ID of the character to retrieve.</param>
-        /// <returns>The requested Marvel character.</returns>
         [HttpGet("characters/{id}")]
         public ActionResult<MarvelCharacter> GetCharacterById(int id)
         {
@@ -84,8 +81,6 @@ namespace IIS___Project_2.Controllers
         /// <summary>
         /// Add a new Marvel character.
         /// </summary>
-        /// <param name="character">The character to add.</param>
-        /// <returns>The added Marvel character.</returns>
         [HttpPost("characters")]
         public ActionResult<MarvelCharacter> AddCharacter(MarvelCharacter character)
         {
@@ -97,9 +92,6 @@ namespace IIS___Project_2.Controllers
         /// <summary>
         /// Update an existing Marvel character by ID.
         /// </summary>
-        /// <param name="id">The ID of the character to update.</param>
-        /// <param name="updatedCharacter">The updated character data.</param>
-        /// <returns>No content if successful.</returns>
         [HttpPut("characters/{id}")]
         public IActionResult UpdateCharacter(int id, MarvelCharacter updatedCharacter)
         {
@@ -119,8 +111,6 @@ namespace IIS___Project_2.Controllers
         /// <summary>
         /// Delete a Marvel character by ID.
         /// </summary>
-        /// <param name="id">The ID of the character to delete.</param>
-        /// <returns>No content if successful.</returns>
         [HttpDelete("characters/{id}")]
         public IActionResult DeleteCharacter(int id)
         {
@@ -140,7 +130,6 @@ namespace IIS___Project_2.Controllers
         /// <summary>
         /// Retrieve all Marvel movies.
         /// </summary>
-        /// <returns>A list of Marvel movies.</returns>
         [HttpGet("movies")]
         public ActionResult<IEnumerable<Movie>> GetAllMovies()
         {
@@ -150,8 +139,6 @@ namespace IIS___Project_2.Controllers
         /// <summary>
         /// Retrieve a specific Marvel movie by ID.
         /// </summary>
-        /// <param name="id">The ID of the movie to retrieve.</param>
-        /// <returns>The requested Marvel movie.</returns>
         [HttpGet("movies/{id}")]
         public ActionResult<Movie> GetMovieById(int id)
         {
@@ -167,8 +154,6 @@ namespace IIS___Project_2.Controllers
         /// <summary>
         /// Add a new Marvel movie.
         /// </summary>
-        /// <param name="movie">The movie to add.</param>
-        /// <returns>The added Marvel movie.</returns>
         [HttpPost("movies")]
         public ActionResult<Movie> AddMovie(Movie movie)
         {
@@ -189,9 +174,6 @@ namespace IIS___Project_2.Controllers
         /// <summary>
         /// Update an existing Marvel movie by ID.
         /// </summary>
-        /// <param name="id">The ID of the movie to update.</param>
-        /// <param name="updatedMovie">The updated movie data.</param>
-        /// <returns>No content if successful.</returns>
         [HttpPut("movies/{id}")]
         public IActionResult UpdateMovie(int id, Movie updatedMovie)
         {
@@ -220,8 +202,6 @@ namespace IIS___Project_2.Controllers
         /// <summary>
         /// Delete a Marvel movie by ID.
         /// </summary>
-        /// <param name="id">The ID of the movie to delete.</param>
-        /// <returns>No content if successful.</returns>
         [HttpDelete("movies/{id}")]
         public IActionResult DeleteMovie(int id)
         {
@@ -238,8 +218,6 @@ namespace IIS___Project_2.Controllers
         /// <summary>
         /// Retrieve all movies for a specific character by their ID.
         /// </summary>
-        /// <param name="characterId">The ID of the character.</param>
-        /// <returns>A list of movies featuring the character.</returns>
         [HttpGet("characters/{characterId}/movies")]
         public ActionResult<IEnumerable<Movie>> GetMoviesForCharacter(int characterId)
         {
@@ -255,8 +233,6 @@ namespace IIS___Project_2.Controllers
         /// <summary>
         /// Retrieve all characters in a specific movie by its ID.
         /// </summary>
-        /// <param name="movieId">The ID of the movie.</param>
-        /// <returns>A list of characters featured in the movie.</returns>
         [HttpGet("movies/{movieId}/characters")]
         public ActionResult<IEnumerable<MarvelCharacter>> GetCharactersInMovie(int movieId)
         {
