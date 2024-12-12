@@ -32,21 +32,28 @@ namespace MarvelWebApp.Soap.Services
             new Movie { Id = 2, Title = "Avengers", ReleaseDate = new DateTime(2012, 5, 4), CharacterIds = new List<int> { 1, 2, 3 } }
         };
 
-        // CHARACTER OPERATIONS
-
-        [WebMethod]
+        /// <summary>
+        /// Retrieve all Marvel characters.
+        /// </summary>
+        [WebMethod(Description = "Retrieve all Marvel characters.")]
         public List<MarvelCharacter> GetAllCharacters()
         {
             return Characters;
         }
 
-        [WebMethod]
+        /// <summary>
+        /// Retrieve a Marvel character by ID.
+        /// </summary>
+        [WebMethod(Description = "Retrieve a Marvel character by ID.")]
         public MarvelCharacter GetCharacterById(int id)
         {
             return Characters.FirstOrDefault(c => c.Id == id);
         }
 
-        [WebMethod]
+        /// <summary>
+        /// Add a new Marvel character.
+        /// </summary>
+        [WebMethod(Description = "Add a new Marvel character.")]
         public string AddCharacter(MarvelCharacter character)
         {
             character.Id = Characters.Any() ? Characters.Max(c => c.Id) + 1 : 1;
@@ -54,7 +61,10 @@ namespace MarvelWebApp.Soap.Services
             return $"Character '{character.Name}' added successfully with ID {character.Id}.";
         }
 
-        [WebMethod]
+        /// <summary>
+        /// Update an existing Marvel character by ID.
+        /// </summary>
+        [WebMethod(Description = "Update an existing Marvel character by ID.")]
         public string UpdateCharacter(int id, MarvelCharacter updatedCharacter)
         {
             var character = Characters.FirstOrDefault(c => c.Id == id);
@@ -67,38 +77,46 @@ namespace MarvelWebApp.Soap.Services
             return $"Character with ID {id} updated successfully.";
         }
 
-        [WebMethod]
+        /// <summary>
+        /// Delete a Marvel character by ID.
+        /// </summary>
+        [WebMethod(Description = "Delete a Marvel character by ID.")]
         public string DeleteCharacter(int id)
         {
             var character = Characters.FirstOrDefault(c => c.Id == id);
             if (character == null)
                 return $"Character with ID {id} not found.";
 
-            // Remove the character from any movies they appear in
             Movies.ForEach(m => m.CharacterIds.Remove(id));
             Characters.Remove(character);
             return $"Character with ID {id} deleted successfully.";
         }
 
-        // MOVIE OPERATIONS
-
-        [WebMethod]
+        /// <summary>
+        /// Retrieve all Marvel movies.
+        /// </summary>
+        [WebMethod(Description = "Retrieve all Marvel movies.")]
         public List<Movie> GetAllMovies()
         {
             return Movies;
         }
 
-        [WebMethod]
+        /// <summary>
+        /// Retrieve a Marvel movie by ID.
+        /// </summary>
+        [WebMethod(Description = "Retrieve a Marvel movie by ID.")]
         public Movie GetMovieById(int id)
         {
             return Movies.FirstOrDefault(m => m.Id == id);
         }
 
-        [WebMethod]
+        /// <summary>
+        /// Add a new Marvel movie.
+        /// </summary>
+        [WebMethod(Description = "Add a new Marvel movie.")]
         public string AddMovie(Movie movie)
         {
             movie.Id = Movies.Any() ? Movies.Max(m => m.Id) + 1 : 1;
-            // Ensure all characters in the movie exist
             foreach (var characterId in movie.CharacterIds)
             {
                 if (!Characters.Any(c => c.Id == characterId))
@@ -108,14 +126,16 @@ namespace MarvelWebApp.Soap.Services
             return $"Movie '{movie.Title}' added successfully with ID {movie.Id}.";
         }
 
-        [WebMethod]
+        /// <summary>
+        /// Update an existing Marvel movie by ID.
+        /// </summary>
+        [WebMethod(Description = "Update an existing Marvel movie by ID.")]
         public string UpdateMovie(int id, Movie updatedMovie)
         {
             var movie = Movies.FirstOrDefault(m => m.Id == id);
             if (movie == null)
                 return $"Movie with ID {id} not found.";
 
-            // Ensure all characters in the updated movie exist
             foreach (var characterId in updatedMovie.CharacterIds)
             {
                 if (!Characters.Any(c => c.Id == characterId))
@@ -128,7 +148,10 @@ namespace MarvelWebApp.Soap.Services
             return $"Movie with ID {id} updated successfully.";
         }
 
-        [WebMethod]
+        /// <summary>
+        /// Delete a Marvel movie by ID.
+        /// </summary>
+        [WebMethod(Description = "Delete a Marvel movie by ID.")]
         public string DeleteMovie(int id)
         {
             var movie = Movies.FirstOrDefault(m => m.Id == id);
@@ -139,28 +162,27 @@ namespace MarvelWebApp.Soap.Services
             return $"Movie with ID {id} deleted successfully.";
         }
 
-        
-        // RELATIONSHIP QUERIES
-
-        [WebMethod]
+        /// <summary>
+        /// Retrieve all movies in which a specific character appears.
+        /// </summary>
+        [WebMethod(Description = "Retrieve all movies in which a specific character appears.")]
         public List<Movie> GetMoviesForCharacter(int characterId)
         {
-            // Ensure the character exists
             if (!Characters.Any(c => c.Id == characterId))
                 throw new Exception($"Character with ID {characterId} not found.");
 
-            // Return movies where the character is featured
             return Movies.Where(m => m.CharacterIds.Contains(characterId)).ToList();
         }
 
-        [WebMethod]
+        /// <summary>
+        /// Retrieve all characters featured in a specific movie.
+        /// </summary>
+        [WebMethod(Description = "Retrieve all characters featured in a specific movie.")]
         public List<MarvelCharacter> GetCharactersInMovie(int movieId)
         {
-            // Ensure the movie exists
             if (!Movies.Any(m => m.Id == movieId))
                 throw new Exception($"Movie with ID {movieId} not found.");
 
-            // Return characters who appear in the movie
             var characterIds = Movies.First(m => m.Id == movieId).CharacterIds;
             return Characters.Where(c => characterIds.Contains(c.Id)).ToList();
         }
