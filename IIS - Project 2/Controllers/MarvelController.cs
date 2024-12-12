@@ -195,5 +195,39 @@ namespace IIS___Project_2.Controllers
             Movies.Remove(movie);
             return NoContent();
         }
+
+
+        // RELATIONSHIP QUERIES
+
+        // GET: api/marvel/characters/{characterId}/movies
+        [HttpGet("characters/{characterId}/movies")]
+        public ActionResult<IEnumerable<Movie>> GetMoviesForCharacter(int characterId)
+        {
+            // Ensure the character exists
+            if (!Characters.Any(c => c.Id == characterId))
+            {
+                return NotFound($"Character with ID {characterId} not found.");
+            }
+
+            // Retrieve all movies for the character
+            var movies = Movies.Where(m => m.CharacterIds.Contains(characterId)).ToList();
+            return Ok(movies);
+        }
+
+        // GET: api/marvel/movies/{movieId}/characters
+        [HttpGet("movies/{movieId}/characters")]
+        public ActionResult<IEnumerable<MarvelCharacter>> GetCharactersInMovie(int movieId)
+        {
+            // Ensure the movie exists
+            if (!Movies.Any(m => m.Id == movieId))
+            {
+                return NotFound($"Movie with ID {movieId} not found.");
+            }
+
+            // Retrieve all characters for the movie
+            var characterIds = Movies.First(m => m.Id == movieId).CharacterIds;
+            var characters = Characters.Where(c => characterIds.Contains(c.Id)).ToList();
+            return Ok(characters);
+        }
     }
 }
