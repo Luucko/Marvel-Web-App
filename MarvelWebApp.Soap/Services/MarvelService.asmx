@@ -138,5 +138,31 @@ namespace MarvelWebApp.Soap.Services
             Movies.Remove(movie);
             return $"Movie with ID {id} deleted successfully.";
         }
+
+        
+        // RELATIONSHIP QUERIES
+
+        [WebMethod]
+        public List<Movie> GetMoviesForCharacter(int characterId)
+        {
+            // Ensure the character exists
+            if (!Characters.Any(c => c.Id == characterId))
+                throw new Exception($"Character with ID {characterId} not found.");
+
+            // Return movies where the character is featured
+            return Movies.Where(m => m.CharacterIds.Contains(characterId)).ToList();
+        }
+
+        [WebMethod]
+        public List<MarvelCharacter> GetCharactersInMovie(int movieId)
+        {
+            // Ensure the movie exists
+            if (!Movies.Any(m => m.Id == movieId))
+                throw new Exception($"Movie with ID {movieId} not found.");
+
+            // Return characters who appear in the movie
+            var characterIds = Movies.First(m => m.Id == movieId).CharacterIds;
+            return Characters.Where(c => characterIds.Contains(c.Id)).ToList();
+        }
     }
 }
