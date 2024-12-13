@@ -3,7 +3,7 @@ using IIS___Project_2.Data; // Assuming you have these namespaces
 
 namespace IIS___Project_2.Services
 {
-    public class MarvelService
+    public class MarvelService: IMarvelService
     {
         private readonly MarvelCharacterRepository _characterRepo;
         private readonly MovieRepository _movieRepo;
@@ -18,9 +18,10 @@ namespace IIS___Project_2.Services
 
         // Character Operations
 
+      
         public IEnumerable<MarvelCharacter> GetAllCharacters()
         {
-            return _characterRepo.GetAllCharacters();
+            return _characterRepo.GetAllCharacters(); // Call the repository to fetch characters from the database
         }
 
         public MarvelCharacter GetCharacterById(int id)

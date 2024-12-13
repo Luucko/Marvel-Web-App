@@ -1,9 +1,17 @@
+using IIS___Project_2.Data;
+using IIS___Project_2.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Register your services here
+builder.Services.AddScoped<IMarvelService, MarvelService>(); // Register the service and its implementation
+builder.Services.AddScoped<MarvelCharacterRepository>(); // Register the repository
+builder.Services.AddScoped<MovieRepository>(); // Register the movie repository
 
+// Add controllers
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Add Swagger for API documentation (optional)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -13,10 +21,9 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -24,12 +31,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
-
-
-
